@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2>Products</h2>
-
     <!-- ITEM LIST -->
     <div class="card" v-for="product in products" v-bind:key="product.id">
       <div class="card-header">
