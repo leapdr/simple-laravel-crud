@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 # POST create product
-Route::post('/products', function(){
-    return Product::create([
-        'name'          => 'Product One',
-        'category'      => 'Category 1',
-        'description'   => 'This is Product One Description',
-    ]);
-});
+Route::post('/products', [ProductController::class, 'store']);
 
-# GET product by id
-Route::get('/products', function(){
-    return Product::all();
-});
+# GET products
+Route::get('/products', [ProductController::class, 'index']);
