@@ -25,6 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * Exposed Routes
  * */
 
+# POST user register
+Route::post('/register', [CustomAuthController::class, 'register']);
+
+# POST user login
+Route::post('/login', [CustomAuthController::class, 'login']);
+
 # GET products
 Route::get('/products', [ProductController::class, 'index']);
 
@@ -34,20 +40,16 @@ Route::get('/product/{id}', [ProductController::class, 'show']);
 # GET product search
 Route::get('/products/search/{name}', [ProductController::class, 'search']);
 
-# POST user register
-Route::post('/register', [CustomAuthController::class, 'register']);
-
-# POST user login
-Route::post('/login', [CustomAuthController::class, 'login']);
-
 /**
  * Protected Routes
  * */
 Route::group(['middleware' => ['auth:sanctum']], function(){
+    # user requests
+    Route::post('/logout', [CustomAuthController::class, 'logout']);
+
+    # product requests
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
-
-    Route::post('/logout', [CustomAuthController::class, 'logout']);
 });
 
