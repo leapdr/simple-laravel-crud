@@ -20,8 +20,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-# POST create product
-Route::post('/products', [ProductController::class, 'store']);
+# Product Resource
+Route::resource('products', ProductController::class);
 
-# GET products
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/search/{name}', [ProductController::class, 'search']);
+
+# POST create product
+// Route::post('/products', [ProductController::class, 'store']);
+
+// # GET product
+// Route::post('/products/$1', [ProductController::class, 'show']);
+
+// # GET products
+// Route::get('/products', [ProductController::class, 'index']);
