@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Auth\CustomAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,16 +21,33 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-# Product Resource
-Route::resource('products', ProductController::class);
+/**
+ * Exposed Routes
+ * */
 
+# GET products
+Route::get('/products', [ProductController::class, 'index']);
+
+# GET product using id
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
+# GET product search
 Route::get('/products/search/{name}', [ProductController::class, 'search']);
 
-# POST create product
-// Route::post('/products', [ProductController::class, 'store']);
+# POST user register
+Route::post('/register', [CustomAuthController::class, 'register']);
 
-// # GET product
-// Route::post('/products/$1', [ProductController::class, 'show']);
+# POST user login
+Route::post('/login', [CustomAuthController::class, 'login']);
 
-// # GET products
-// Route::get('/products', [ProductController::class, 'index']);
+/**
+ * Protected Routes
+ * */
+Route::group(['middleware' => ['auth:sanctum']], function(){
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+    Route::post('/logout', [CustomAuthController::class, 'logout']);
+});
+
