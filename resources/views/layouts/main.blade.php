@@ -4,6 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" conents="{{ csrf_token() }}">
+  <script>
+    window.Laravel = { csrfToken: '{{ csrf_token() }}'}
+  </script>
   <title>AdminLTE 3 | Blank Page</title>
 
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -114,9 +118,10 @@
 
     <!-- Main content -->
     <section class="content">
+      @yield('content')
 
       <!-- Default box -->
-      <div class="card">
+      {{-- <div class="card">
         <div class="card-header">
           <h3 class="card-title">Title</h3>
 
@@ -136,7 +141,7 @@
         <div class="card-footer">
         </div>
         <!-- /.card-footer-->
-      </div>
+      </div> --}}
       <!-- /.card -->
 
     </section>
