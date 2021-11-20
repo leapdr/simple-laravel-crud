@@ -7,7 +7,8 @@
       <div class="card-header">
         <h3 class="card-title">{{ product.name }}</h3>
         <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove" style="color: red">
+          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove" style="color: red"
+            @click="deleteProduct(product.id)">
             <i class="fas fa-times"></i>
           </button>
         </div>
@@ -83,6 +84,25 @@ export default {
       }
 
       this.pagination = pg;
+    },
+    deleteProduct(id){
+      if(confirm('Are you Sure?')){
+        fetch(`/api/product/${id}`, {
+            method: 'delete',
+            headers: { 
+              "Content-Type": "application/json",
+              "Authorization": "Bearer 5|kRzviKkNqcxrBCEaoVEh2I60NzFbpsSKa5EMg4hr",
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }
+          })
+          .then(res => res.json())
+          .then(data => {
+            alert('Product has been removed.');
+            // or disable because ui handles removing the card
+            // this.fetchProducts('/api/products?page=' + this.pagination.current_page);
+          })
+          .catch(error => console.log(error));
+      }
     }
   }
 }

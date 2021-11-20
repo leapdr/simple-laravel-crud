@@ -82,7 +82,16 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        return Product::destroy($id);
+        $product = Product::find($id);
+
+        if( $product ){
+            $product->delete();
+            return new ProductResource($product);
+        } else {
+            return response([
+                'message' => 'Product not found'
+            ], 404);
+        }
     }
 
     /**
