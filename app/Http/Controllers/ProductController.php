@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -12,10 +13,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return Product::all();
+        // check for pagination item limit
+        $limit = $request->query('limit') ?: 15;
+
+        $products = Product::paginate($limit);
+
+        return ProductResource::collection($products);
     }
 
     /**
@@ -43,7 +48,15 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return Product::find($id);
+        $product = Product::find($id);
+
+        if($product){
+            return new ProductResource($product);
+        } else {
+            return response([
+                'message' => 'Product not found'
+            ], 404);
+        }
     }
 
     /**
@@ -58,7 +71,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->update($request->all());
 
-        return $product;
+        return new ProductResource($product);
     }
 
     /**
