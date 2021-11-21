@@ -7,9 +7,16 @@ use View;
 use App\Models\Product;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    public function products(){
+        return View::make('products.index')->with([
+            'categories' => $this->getDistinctCategories(),
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +29,8 @@ class ProductController extends Controller
 
         $products = Product::orderBy('datetime', 'desc')->paginate($limit);
 
-        return ProductResource::collection($products);
+        return ProductResource::collection($products)
+            ->additional(['categories' => $this->getDistinctCategories()]);
     }
 
     /**
@@ -123,7 +131,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Search for a name.
+     * Search for a name or part of description
      *
      * @param  string  $name
      * @return \Illuminate\Http\Response
@@ -134,7 +142,23 @@ class ProductController extends Controller
             ->orWhere('description', 'like', "%{$keyword}%")
             ->orderBy('datetime', 'desc')
             ->paginate(15);
-        return ProductResource::collection($products);
+        return ProductResource::collection($products)
+            ->additional(['categories' => $this->getDistinctCategories()]);
+    }
+
+    /**
+     * Search for a name.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function filter($category)
+    {
+        $products = Product::where('category', $category)
+            ->orderBy('datetime', 'desc')
+            ->paginate(15);
+        return ProductResource::collection($products)
+            ->additional(['categories' => $this->getDistinctCategories()]);
     }
 
     /** 
@@ -158,5 +182,27 @@ class ProductController extends Controller
             'search'    => $keyword,
             'nav_page'  => 'products',
         ]);
+    }
+
+    /** 
+     * Search Page
+     */
+    public function filterPage($category){
+        return View::make('products.index')->with([
+            'filter'        => $category,
+            'nav_page'      => 'products',
+            'categories'    => $this->getDistinctCategories()
+        ]);
+    }
+
+    private function getDistinctCategories(){
+        $categories = DB::table('products')->distinct('category')->get();
+
+        if( $categories ){
+            $distinctCategories = $categories->pluck('category')->toArray();
+            return $distinctCategories;
+        } else {
+            return [];
+        }
     }
 }

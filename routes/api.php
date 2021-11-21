@@ -40,6 +40,9 @@ Route::get('/product/{id}', [ProductController::class, 'show']);
 # GET product search
 Route::get('/products/search/{keyword}', [ProductController::class, 'search']);
 
+# GET product filter
+Route::get('/products/filter/{category}', [ProductController::class, 'filter']);
+
 /**
  * Protected Routes
  * */

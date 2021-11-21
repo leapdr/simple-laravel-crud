@@ -152,12 +152,19 @@
   });
 
   var searchInput = document.getElementById("searchInput");
+  var filterProducts = document.getElementById("filter-products");
+
   searchInput.addEventListener("keyup", function(ev){
     if (ev.keyCode === 13) {
       event.preventDefault();
       search();
     }
   });
+
+  filterProducts.addEventListener("change", function(){
+    let filter = encodeURI(this.value);
+    window.location.href = "/products/filter/"+filter;
+  })
 
   function search(){
     let keyword = $("#searchInput").val();

@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+use App\Model\Product as Prod;
 
 class Product extends JsonResource
 {
@@ -21,5 +23,16 @@ class Product extends JsonResource
         //     'title'     => $this->title,
         //     'category'  => $this->category,
         // ];
+    }
+
+    public function with($request){
+        $categories = DB::table('products')->distinct('category')->get();
+
+        if( $categories ){
+            $distinctCategories = $categories->pluck('category')->toArray();
+            return [
+                "category" => $distinctCategories,
+            ];
+        }
     }
 }

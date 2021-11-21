@@ -15,7 +15,10 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     # Products
     Route::get('/product/{id}/edit', [ProductController::class, "edit"]);
     Route::get('/product/{id}/edit', [ProductController::class, "edit"]);
+
     Route::get('/products/search/{keyword}', [ProductController::class, "searchPage"]);
+    Route::get('/products/filter/{category}', [ProductController::class, "filterPage"]);
+
     Route::get('/product/new', function () {
         return view('products.form')->with([
             'type'      => 'create',
@@ -23,8 +26,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
             'nav_page'  => 'product/new',
         ]);
     });
-    Route::get('/products', function(){
-        return view('products.index');
-    });
+    Route::get('/products', [ProductController::class, "products"]);
     
 });

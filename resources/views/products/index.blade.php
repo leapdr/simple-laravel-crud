@@ -9,9 +9,6 @@
             <h2>Products</h2>
         </div>
         <div class="col-sm-6">
-            <div class="float-sm-right">
-            <a href="{{ url('product/new') }}" class="btn btn-block btn-success">Create Product</a>
-            </div>
         </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -20,8 +17,33 @@
 <!-- Main content -->
 <section class="content">
     <script>window.search = "{{ $search ?? '' }}";</script>
-    <div id="app">
-        <div class="container">
+    <script>window.filter = "{{ $filter ?? '' }}";</script>
+    
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-sm-6">
+                <select id="filter-products" class="custom-select">
+                    <option value='' selected>Select Category</option>
+                    @isset ($categories)
+                        @foreach ( $categories as $cat)
+                            <option value="{{ $cat }}"
+                                @if ( $cat == ($filter ?? ''))
+                                    selected
+                                @endif>
+                                {{ $cat }}
+                            </option>
+                        @endforeach
+                    @endisset
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <div class="float-sm-right">
+                <a href="{{ url('product/new') }}" class="btn btn-block btn-success">Create Product</a>
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+        <div id="app">
             <products>
         
             </products>

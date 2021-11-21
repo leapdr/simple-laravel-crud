@@ -49,11 +49,13 @@
 
 <script>
 let term = window.search;
+let filt = window.filter;
 
 export default {
   data(){
     return {
       keyword: term,
+      filter: filt,
       products: [],
       product: {
         id: '',
@@ -67,14 +69,21 @@ export default {
   },
 
   created() {
-    if( this.keyword !== ""){
+    if( this.keyword !== "" && typeof this.keyword !== undefined && this.keyword !== null ){
       this.searchProducts();
+    } else if( this.filter !== "" && typeof this.filter !== undefined && this.filter !== null ){
+      this.filterProducts();
     } else {
       this.fetchProducts();
     }
   },
 
   methods: {
+    filterProducts(){
+      let catFilter = encodeURI(this.filter);
+      let uri = "/api/products/filter/" + catFilter;
+      this.fetchProducts(uri);
+    },
     searchProducts(){
       let keySearch = encodeURI(this.keyword);
       let uri = "/api/products/search/" + keySearch;
