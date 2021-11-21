@@ -59,11 +59,11 @@
 
       <!-- SidebarSearch Form -->
       <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group">
+          <input id="searchInput" class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
+              <i class="fas fa-search fa-fw" onclick="search()"></i>
             </button>
           </div>
         </div>
@@ -75,7 +75,8 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ url('/') }}" class="nav-link
+              {{ request()->path() == "/" ? "active" : "" }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -83,7 +84,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="../widgets.html" class="nav-link">
+            <a href="{{ url('/products') }}" class="nav-link 
+              {{ request()->path() == "products" ? "active" : "" }}">
               <i class="nav-icon fas fa-list"></i>
               <p>
                 Products
@@ -121,4 +123,20 @@
 <!-- jQuery -->
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+  
+<script type="text/javascript">
+  $('#datetimepicker').datepicker({  
+    format: 'yyyy-mm-dd'
+  });
+
+  function search(){
+    let keyword = $("#searchInput").val();
+    keyword = encodeURI(keyword);
+    window.location.href = "/products/search/"+keyword;
+  }
+</script> 
 </html>

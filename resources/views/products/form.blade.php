@@ -5,27 +5,23 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-        <div class="col-sm-6">
-            <h2>Products</h2>
-        </div>
-        <div class="col-sm-6">
-            <div class="float-sm-right">
-            <a href="{{ url('product/new') }}" class="btn btn-block btn-success">Create Product</a>
+            <div class="col-sm-6">
+                <h2>{{ ucfirst($type) }} Product</h2>
             </div>
-        </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
 
 <!-- Main content -->
 <section class="content">
-    <script>window.search = "{{ $search ?? '' }}";</script>
+    <script>window.product = @json($product);</script>
     <div id="app">
         <div class="container">
-            <products>
+            <product-form>
         
-            </products>
+            </product-form>
         </div>
     </div>
 </section>
+
 @endsection

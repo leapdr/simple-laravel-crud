@@ -1,11 +1,18 @@
 <template>
   <div>
     <!-- ITEM LIST -->
-    <div class="card" v-for="product in products" v-bind:key="product.id">
-      <div class="card-header">
-        <h3 class="card-title">{{ product.name }}</h3>
+    <div class="card card-default" v-for="product in products" v-bind:key="product.id">
+      <div class="card-header bg-transparent">
+        <h3 class="card-title mb-0">{{ product.name }}</h3>
         <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove" style="color: red"
+          <button class="btn btn-tool"
+            @click="editProduct(product.id)">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-tool" title="Delete" style="color: red"
             @click="deleteProduct(product.id)">
             <i class="fas fa-times"></i>
           </button>
@@ -41,10 +48,12 @@
 </template>
 
 <script>
+let term = window.search;
 
 export default {
   data(){
     return {
+      keyword: term,
       products: [],
       product: {
         id: '',
@@ -58,15 +67,24 @@ export default {
   },
 
   created() {
-    this.fetchProducts();
+    if( this.keyword !== ""){
+      this.searchProducts();
+    } else {
+      this.fetchProducts();
+    }
   },
 
   methods: {
+    searchProducts(){
+      let keySearch = encodeURI(this.keyword);
+      let uri = "/api/products/search/" + keySearch;
+      this.fetchProducts(uri);
+    },
     fetchProducts(page_url){
       let fp = this;
       page_url = page_url || "/api/products";
       fetch(page_url)
-        .then(res => res.json())
+        .then(res => res.json)
         .then(res => {
           this.products = res.data;
           fp.makePagination(res.meta, res.links);
@@ -74,6 +92,8 @@ export default {
         .catch(error => console.log(error));
     },
     makePagination(meta, links){
+      // @TODO search pagination meta
+
       let pg = {
         current_page: meta.current_page,
         last_page: meta.last_page,
@@ -96,11 +116,13 @@ export default {
           .then(res => res.json())
           .then(data => {
             alert('Product has been removed.');
-            // or disable because ui handles removing the card
-            // this.fetchProducts('/api/products?page=' + this.pagination.current_page);
+            this.fetchProducts('/api/products?page=' + this.pagination.current_page);
           })
           .catch(error => console.log(error));
       }
+    },
+    editProduct(id){
+      window.location.href = "/product/"+id+"/edit";
     }
   }
 }

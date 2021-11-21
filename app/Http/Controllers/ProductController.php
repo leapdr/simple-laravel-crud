@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use View;
 use App\Models\Product;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
@@ -18,7 +20,7 @@ class ProductController extends Controller
         // check for pagination item limit
         $limit = $request->query('limit') ?: 15;
 
-        $products = Product::paginate($limit);
+        $products = Product::orderBy('datetime', 'desc')->paginate($limit);
 
         return ProductResource::collection($products);
     }
@@ -36,8 +38,23 @@ class ProductController extends Controller
             'category'      => 'required',
             'description'   => 'required',
         ]);
+
+        $product = new Product;
+
+        $product->name = $request->input('name');
+        $product->category = $request->input('category');
+        $product->description = $request->input('description');
         
-        return Product::create($request->all());
+        $product->datetime = Carbon::parse($request->input('datetime'))->format('Y-m-d H:i:s');
+
+        if( $product->save() ){
+            return new ProductResource($product);
+        } else {
+            return response([
+                'message' => 'Product creation failed',
+            ], 202);
+        }
+        
     }
 
     /**
@@ -69,9 +86,20 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::find($id);
-        $product->update($request->all());
 
-        return new ProductResource($product);
+        $product->name = $request->input('name');
+        $product->category = $request->input('category');
+        $product->description = $request->input('description');
+        
+        $product->datetime = Carbon::parse($request->input('datetime'))->format('Y-m-d H:i:s');
+
+        if( $product->save() ){
+            return new ProductResource($product);
+        } else {
+            return response([
+                'message' => 'Product update failed',
+            ], 202);
+        }
     }
 
     /**
@@ -100,8 +128,33 @@ class ProductController extends Controller
      * @param  string  $name
      * @return \Illuminate\Http\Response
      */
-    public function search($name)
+    public function search($keyword)
     {
-        return Product::where('name', 'like', "%{$name}%")->get();
+        $products = Product::where('name', 'like', "%{$keyword}%")
+            ->orWhere('description', 'like', "%{$keyword}%")
+            ->orderBy('datetime', 'desc')
+            ->paginate(15);
+        return ProductResource::collection($products);
+    }
+
+    /** 
+     * Edit Form
+     */
+    public function edit($id){
+        $product = Product::find($id);
+
+        return View::make('products.form')->with([
+            'product'   => $product,
+            'type'      => 'edit',
+        ]);
+    }
+
+    /** 
+     * Search Page
+     */
+    public function searchPage($keyword){
+        return View::make('products.index')->with([
+            'search'    => $keyword,
+        ]);
     }
 }

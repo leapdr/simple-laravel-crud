@@ -38,7 +38,7 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/product/{id}', [ProductController::class, 'show']);
 
 # GET product search
-Route::get('/products/search/{name}', [ProductController::class, 'search']);
+Route::get('/products/search/{keyword}', [ProductController::class, 'search']);
 
 /**
  * Protected Routes
@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/logout', [CustomAuthController::class, 'logout']);
 
     # product requests
-    Route::post('/products', [ProductController::class, 'store']);
+    Route::post('/product', [ProductController::class, 'store']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
 });
