@@ -42,14 +42,24 @@ class CustomAuthController extends Controller
     }
 
     /**
-     * User logout
+     * Logout user from API
      */
-    public function logout(Request $request){
+    public function logoutAPI(Request $request){
         auth()->user()->tokens()->delete();
 
         return [
             'message' => 'Logged out',
         ];
+    }
+
+    /**
+     * Logout user from UI
+     */
+    public function logout(){
+        # remove user token
+        auth()->user()->tokens()->delete();
+
+        # return to login
     }
 
     /**
