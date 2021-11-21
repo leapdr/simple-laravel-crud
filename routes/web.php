@@ -15,7 +15,11 @@ Route::get('/products', function(){
 Route::get('/products/search/{keyword}', [ProductController::class, "searchPage"]);
 
 Route::get('/product/new', function () {
-    return view('products.form')->with('type', 'create');
+    return view('products.form')->with([
+        'type'      => 'create',
+        'product'   => [],
+        'nav_page'  => 'products',
+    ]);
 });
 
 Route::get('/product/{id}/edit', [ProductController::class, "edit"]);

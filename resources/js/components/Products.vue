@@ -84,7 +84,7 @@ export default {
       let fp = this;
       page_url = page_url || "/api/products";
       fetch(page_url)
-        .then(res => res.json)
+        .then(res => res.json())
         .then(res => {
           this.products = res.data;
           fp.makePagination(res.meta, res.links);

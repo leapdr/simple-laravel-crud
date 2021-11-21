@@ -146,6 +146,7 @@ class ProductController extends Controller
         return View::make('products.form')->with([
             'product'   => $product,
             'type'      => 'edit',
+            'nav_page'  => 'products',
         ]);
     }
 
@@ -155,6 +156,7 @@ class ProductController extends Controller
     public function searchPage($keyword){
         return View::make('products.index')->with([
             'search'    => $keyword,
+            'nav_page'  => 'products',
         ]);
     }
 }

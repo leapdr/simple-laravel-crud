@@ -85,7 +85,7 @@
           </li>
           <li class="nav-item">
             <a href="{{ url('/products') }}" class="nav-link 
-              {{ request()->path() == "products" ? "active" : "" }}">
+              {{ ($nav_page ?? request()->path()) == "products" ? "active" : "a" }}">
               <i class="nav-icon fas fa-list"></i>
               <p>
                 Products
@@ -131,6 +131,14 @@
 <script type="text/javascript">
   $('#datetimepicker').datepicker({  
     format: 'yyyy-mm-dd'
+  });
+
+  var searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("keyup", function(ev){
+    if (ev.keyCode === 13) {
+      event.preventDefault();
+      search();
+    }
   });
 
   function search(){
