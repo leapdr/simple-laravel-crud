@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
+{{-- @TODO display errors --}}
 <div class="login-box">
   <div class="login-logo">
     <a href="#">S<b>i</b>MPLE</a>
