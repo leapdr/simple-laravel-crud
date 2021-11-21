@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="card-body">
-        <p>{{ product.description }}</p>
+        <div v-html="product.description"></div>
       </div>
     </div>
 

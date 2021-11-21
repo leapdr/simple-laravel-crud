@@ -217,4 +217,14 @@ class ProductController extends Controller
             'message' => 'Product details has been validated.',
         ], 200);
     }
+
+    public function validateDatetime(Request $request){
+        $request->validate([
+            'datetime'          => 'required|date',
+        ]);
+
+        return response([
+            'message' => 'Product details has been validated.',
+        ], 200);
+    }
 }

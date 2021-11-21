@@ -80,14 +80,16 @@
           </form>
         </div>
         <div id="step-3-content" class="tab-pane fade" role="tabpanel">
-          <div class="form-group row d-flex justify-content-center">
-            <label class="col-3 col-form-label" for="product-datetime">Product Datetime</label>
-            <datetime id="product-datetime" format="YYYY-MM-DD H:i:s" width="300px" 
-              v-model="product.datetime"></datetime>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-flat float-right">Create Product</button>
-          </div>
+          <form @submit.prevent="validate(3)" class="mb-4 px-5 py-3 mx-5">
+            <div class="form-group row d-flex justify-content-center">
+              <label class="col-3 col-form-label" for="product-datetime">Product Datetime</label>
+              <datetime id="product-datetime" format="YYYY-MM-DD H:i:s" width="300px" 
+                v-model="product.datetime"></datetime>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-flat float-right">Create Product</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -98,8 +100,6 @@
 <script>
 
 window.onload = function(){
-
-
   $('#product-description').summernote({
     height: 200,
   });
@@ -198,6 +198,32 @@ export default {
           $("#step-"+step+"-content").removeClass("active show")
           $("#step-"+(step+1)+"-content").addClass("active show")
         }
+      } else if (step == 3){
+        
+        fetch('/api/product/validate/datetime', {
+          method: 'post',
+          headers:{
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer 5|kRzviKkNqcxrBCEaoVEh2I60NzFbpsSKa5EMg4hr",
+            'X-CSRF-TOKEN': this.csrf,
+          },
+          body: JSON.stringify(this.product)
+        })
+        .then(res => res.json())
+        .then(data => {
+          let errors = data.errors
+          if(errors){
+            let errorFields = Object.keys(data.errors)
+            if( errorFields.length > 0 ){
+              // @TODO revise alert
+              alert("invalid datetime");
+            }
+          } else {
+            this.addProduct();
+          }
+        })
+        .catch(error => console.log(error));
       }
     },
     displaySelectedImageFiles(){
@@ -229,8 +255,9 @@ export default {
         })
         .then(res => res.json())
         .then(data => {
-          // @TODO redirect
+          // @TODO revise alert
           alert('Product Created');
+          window.location.href = '/products';
         })
         .catch(error => console.log(error));
       } else {
