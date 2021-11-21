@@ -79,7 +79,15 @@
             </div>
           </form>
         </div>
-        <div id="step-2-content" class="tab-pane fade" role="tabpanel">
+        <div id="step-3-content" class="tab-pane fade" role="tabpanel">
+          <div class="form-group row d-flex justify-content-center">
+            <label class="col-3 col-form-label" for="product-datetime">Product Datetime</label>
+            <datetime id="product-datetime" format="YYYY-MM-DD H:i:s" width="300px" 
+              v-model="product.datetime"></datetime>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-flat float-right">Create Product</button>
+          </div>
         </div>
       </div>
     </div>
@@ -90,6 +98,8 @@
 <script>
 
 window.onload = function(){
+
+
   $('#product-description').summernote({
     height: 200,
   });
