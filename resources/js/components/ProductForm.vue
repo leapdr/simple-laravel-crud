@@ -14,14 +14,17 @@
       </textarea>
     </div>
     <div class="form-group">
-      <div class='input-group'>
-          <input id='datetimepicker' type='text' class="form-control date time" v-model="product.datetime">
-          <div class="input-group-append">
+      <datetime format="YYYY-MM-DD H:i:s" width="300px" v-model="val"></datetime>
+
+      <!-- <div class='input-group date' id='datetimepicker1' data-target-input="nearest">
+          <input type='text' class="form-control datetimepicker-input" data-target="#datetimepicker1"
+            v-model="product.datetime">
+          <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
             <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
           </div>
           <div class="input-group-addon hidden">
           </div>
-      </div>
+      </div> -->
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-outline-success btn-flat float-right">Submit</button>
@@ -33,7 +36,12 @@
 
 let p=window.product;
 
+import datetime from 'vuejs-datetimepicker';
+
 export default {
+  components: {
+    datetime
+  },
   data(){
     return {
       product: {
