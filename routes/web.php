@@ -26,6 +26,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
             'nav_page'  => 'product/new',
         ]);
     });
-    Route::get('/products', [ProductController::class, "products"]);
+    Route::get('/products', [ProductController::class, "products"])->name('products');
     
 });

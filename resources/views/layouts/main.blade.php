@@ -163,7 +163,11 @@
 
   filterProducts.addEventListener("change", function(){
     let filter = encodeURI(this.value);
-    window.location.href = "/products/filter/"+filter;
+    if( filter == ''){
+      window.location.href = "{{ route('products') }}";
+    } else {
+      window.location.href = "/products/filter/"+filter;
+    }
   })
 
   function search(){
