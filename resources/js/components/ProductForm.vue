@@ -126,7 +126,7 @@ export default {
       },
       product_id: '',
       pagination: {},
-      edit: false
+      edit: p.id ? true : false
     }
   },
   methods: {
@@ -150,8 +150,13 @@ export default {
       if(step == 1){
         let htmlDesc = $("#product-description").summernote('code');
         this.product.description = htmlDesc == "<p><br></p>" ? "" : htmlDesc;
+
+        let validatorURI = '/api/product/validate/nameCatDesc';
+        if(this.edit){
+          validatorURI = '/api/product/validate/catDesc';
+        } 
         
-        fetch('/api/product/validate/nameCatDesc', {
+        fetch(validatorURI, {
           method: 'post',
           headers:{
             "Accept": "application/json",
@@ -241,28 +246,23 @@ export default {
       }
     },
     addProduct(){
-      if(this.edit === false){
-        // Add
-        fetch('/api/product', {
-          method: 'post',
-          headers: { 
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer 5|kRzviKkNqcxrBCEaoVEh2I60NzFbpsSKa5EMg4hr",
-            'X-CSRF-TOKEN': this.csrf,
-          },
-          body: JSON.stringify(this.product)
-        })
-        .then(res => res.json())
-        .then(data => {
-          // @TODO revise alert
-          alert('Product Created');
-          window.location.href = '/products';
-        })
-        .catch(error => console.log(error));
-      } else {
-        // Edit
-      }
+      fetch('/api/product', {
+        method: this.edit === false ? 'post' : 'put',
+        headers: { 
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer 5|kRzviKkNqcxrBCEaoVEh2I60NzFbpsSKa5EMg4hr",
+          'X-CSRF-TOKEN': this.csrf,
+        },
+        body: JSON.stringify(this.product)
+      })
+      .then(res => res.json())
+      .then(data => {
+        // @TODO revise alert
+        alert('Product Created');
+        window.location.href = '/products';
+      })
+      .catch(error => console.log(error));
     }
   },
   created() {

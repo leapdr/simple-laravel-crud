@@ -206,6 +206,17 @@ class ProductController extends Controller
         }
     }
 
+    public function validateCatDesc(Request $request){
+        $request->validate([
+            'category'      => 'required|max:20',
+            'description'   => 'required|max:2500|min:10',
+        ]);
+
+        return response([
+            'message' => 'Product details has been validated.',
+        ], 200);
+    }
+
     public function validateNameCatDesc(Request $request){
         $request->validate([
             'name'          => 'required|unique:products|max:50|min:5',

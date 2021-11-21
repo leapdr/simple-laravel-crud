@@ -8,8 +8,9 @@
   <script>
     window.Laravel = { csrfToken: '{{ csrf_token() }}'}
   </script>
-  <title>AdminLTE 3 | Blank Page</title>
+  <title>{{ env('APP_NAME')  }} | Blank Page</title>
 
+  <link rel="shortcut icon" href="{{ asset('SiMPLE.png') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 </head>
@@ -50,7 +51,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="../../index3.html" class="brand-link">
-        <img src="../../dist/img/AdminLTELogo.png" alt="Simple Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="{{ asset('storage/SiMPLE.png') }}" alt="Simple Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">SiMPLE</span>
       </a>
 
@@ -63,7 +64,7 @@
           </div>
           <div class="info">
               <!-- @TODO change user to user name -->
-            <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="#" class="d-block">{{ auth()->user()->username }}</a>
           </div>
         </div>
 

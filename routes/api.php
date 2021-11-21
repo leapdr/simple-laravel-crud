@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
 
+    Route::post('/product/validate/catDesc', [ProductController::class, 'validateCatDesc']);
     Route::post('/product/validate/nameCatDesc', [ProductController::class, 'validateNameCatDesc']);
     Route::post('/product/validate/datetime', [ProductController::class, 'validateDatetime']);
 });
