@@ -101,6 +101,15 @@
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ url('/product/new') }}" class="nav-link 
+                {{ ($nav_page ?? request()->path()) == "product/new" ? "active" : "a" }}">
+                <i class="nav-icon fas fa-plus"></i>
+                <p>
+                  Create Product
+                </p>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

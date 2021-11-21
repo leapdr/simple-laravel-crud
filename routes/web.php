@@ -20,7 +20,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
         return view('products.form')->with([
             'type'      => 'create',
             'product'   => [],
-            'nav_page'  => 'products',
+            'nav_page'  => 'product/new',
         ]);
     });
     Route::get('/products', function(){
