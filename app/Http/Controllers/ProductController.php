@@ -42,9 +42,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'          => 'required',
-            'category'      => 'required',
-            'description'   => 'required',
+            'name'          => 'required|unique:products|max:50',
+            'category'      => 'required|max:20',
+            'description'   => 'required|max:2500',
         ]);
 
         $product = new Product;
@@ -204,5 +204,17 @@ class ProductController extends Controller
         } else {
             return [];
         }
+    }
+
+    public function validateNameCatDesc(Request $request){
+        $request->validate([
+            'name'          => 'required|unique:products|max:50|min:5',
+            'category'      => 'required|max:20',
+            'description'   => 'required|max:2500|min:10',
+        ]);
+
+        return response([
+            'message' => 'Product details has been validated.',
+        ], 200);
     }
 }
