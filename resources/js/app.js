@@ -21,6 +21,7 @@ window.Vue = require('vue').default;
 
 Vue.component('products', require('./components/Products.vue').default);
 Vue.component('product-form', require('./components/ProductForm.vue').default);
+Vue.component('video-player', require('./components/Videos.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\File\UploadController;
 
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,6 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     });
     Route::get('/products', [ProductController::class, "products"])->name('products');
     
+    # Videos
+    Route::get('/videos', [VideoController::class, "index"])->name('videos');
 });
