@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\File\UploadController;
 
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::post("/product/{id}/upload", [UploadController::class, "uploadFiles"]);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     # Dashboard
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);

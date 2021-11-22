@@ -54,11 +54,11 @@
           </form>
         </div>
         <div id="step-2-content" class="tab-pane fade" role="tabpanel">
-          <form @submit.prevent="validate(2)" class="mb-4 px-5 py-3 mx-5">
+          <form @submit.prevent="validate(2)" class="mb-4 px-5 py-3 mx-5" enctype="multipart/form-data">
             <div class="form-group">
                 <!-- <label for="customFile">Custom File</label> -->
                 <div class="custom-file">
-                  <input type="file" @change="fileChange" multiple class="custom-file-input" id="product-file"
+                  <input type="file" ref="file" @change="fileChange" multiple class="custom-file-input" id="product-file"
                     aria-describedby="file-error" aria-invalid="true">
                   <label class="custom-file-label" for="product-file">Choose file</label>
                   <span id="file-error" class="error invalid-feedback" ></span>
@@ -133,6 +133,36 @@ export default {
     }
   },
   methods: {
+    uploadFiles(){
+      // @TODO check for changed file in validation
+      // @TODO add remove file function for edit
+
+      let formData = new FormData();
+      for(let i = 0; i < this.product.images.length; i++){
+        let file = this.product.images[i];
+        console.log(file);
+        formData.append('files[' + i + ']', file);
+      }
+
+      // @TODO try to get product on newly created product
+      fetch("/product/" + this.product.id + "/upload", {
+        method: 'post',
+        headers: { 
+          'Accept': '*/*',
+          'X-CSRF-TOKEN': this.csrf,
+        },
+        body: formData
+      }).then(res => {
+        console.log(res.text());
+        return res.json();
+      })
+      .then(data => {
+        console.log(data)
+
+        window.location.href = '/products';
+      })
+      .catch(error => console.log(error));
+    },
     fileChange(e){
       let files = e.target.files;
       if( this.product.images.length >= 5){
@@ -267,9 +297,13 @@ export default {
       .then(data => {
         // @TODO revise alert
         alert('Product ' + (this.edit ? "Updated" : "Created"));
-        window.location.href = '/products';
+
+        this.uploadFiles();
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error))
+      .finally(function(){
+        window.location.href = '/products';
+      });
     }
   },
   created() {
