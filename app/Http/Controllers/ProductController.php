@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -120,6 +121,8 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
+        $prodDir = "public/images/products/" . $id;
+        Storage::deleteDirectory($prodDir);
 
         if( $product ){
             $product->delete();

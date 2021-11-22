@@ -156,7 +156,7 @@ export default {
         body: formData
       }).then(res => res.json())
       .then(data => {
-        window.location.href = '/products';
+        console.log(data);
       })
       .catch(error => console.log(error));
     },
@@ -293,12 +293,18 @@ export default {
       })
       .then(res => res.json())
       .then(data => {
+        let newItem = data.data;
+        this.product.id = newItem.id;
+        this.product.category = newItem.category;
+        this.product.description = newItem.description;
+        this.product.datetime = newItem.datetime;
+
         // @TODO revise alert
         alert('Product ' + (this.edit ? "Updated" : "Created"));
 
-        if( this.edit && this.fileUpdated){
+        // if( this.edit && this.fileUpdated){
           this.uploadFiles();
-        }
+        // }
       })
       .catch(error => console.log(error))
       .finally(function(){
