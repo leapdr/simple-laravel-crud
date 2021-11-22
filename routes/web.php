@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
             'type'      => 'create',
             'product'   => [],
             'nav_page'  => 'product/new',
+            'title'     => 'Create Product',
         ]);
     });
     Route::get('/products', [ProductController::class, "products"])->name('products');

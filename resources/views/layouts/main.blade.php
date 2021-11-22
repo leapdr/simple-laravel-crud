@@ -8,9 +8,9 @@
   <script>
     window.Laravel = { csrfToken: '{{ csrf_token() }}'}
   </script>
-  <title>{{ env('APP_NAME')  }} | Blank Page</title>
+  <title>{{ env('APP_NAME')  }} | {{ $title ?? '' }}</title>
 
-  <link rel="shortcut icon" href="{{ asset('SiMPLE.png') }}">
+  <link rel="shortcut icon" href="{{ asset('storage/SiMPLE.png') }}">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 </head>

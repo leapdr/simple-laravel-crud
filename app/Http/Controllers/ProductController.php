@@ -14,6 +14,7 @@ class ProductController extends Controller
     public function products(){
         return View::make('products.index')->with([
             'categories' => $this->getDistinctCategories(),
+            "title" => "Products",
         ]);
     }
 
@@ -25,7 +26,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         // check for pagination item limit
-        $limit = $request->query('limit') ?: 15;
+        $limit = $request->query('limit') ?: 10;
 
         $products = Product::orderBy('datetime', 'desc')->paginate($limit);
 
@@ -171,6 +172,7 @@ class ProductController extends Controller
             'product'   => $product,
             'type'      => 'edit',
             'nav_page'  => 'products',
+            'title'     => 'Edit Product',
         ]);
     }
 
@@ -181,6 +183,7 @@ class ProductController extends Controller
         return View::make('products.index')->with([
             'search'    => $keyword,
             'nav_page'  => 'products',
+            'title'     => 'Products',
         ]);
     }
 
@@ -191,7 +194,8 @@ class ProductController extends Controller
         return View::make('products.index')->with([
             'filter'        => $category,
             'nav_page'      => 'products',
-            'categories'    => $this->getDistinctCategories()
+            'categories'    => $this->getDistinctCategories(),
+            'title'         => 'Products',
         ]);
     }
 
