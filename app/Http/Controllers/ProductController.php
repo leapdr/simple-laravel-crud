@@ -53,7 +53,7 @@ class ProductController extends Controller
         $product->category = $request->input('category');
         $product->description = $request->input('description');
         
-        $product->datetime = Carbon::parse($request->input('datetime'))->format('Y-m-d H:i:s');
+        $product->datetime = $request->input('datetime');
 
         if( $product->save() ){
             return new ProductResource($product);

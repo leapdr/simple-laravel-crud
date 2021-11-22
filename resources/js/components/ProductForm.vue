@@ -87,7 +87,10 @@
                 v-model="product.datetime"></datetime>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-flat float-right">Create Product</button>
+              <button type="submit" class="btn btn-primary btn-flat float-right">
+                <span v-if="edit">Update Product</span>
+                <span v-else>Update Product</span>
+              </button>
             </div>
           </form>
         </div>
@@ -117,7 +120,7 @@ export default {
     return {
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       product: {
-        id: p.pid,
+        id: p.id,
         name: p.name,
         description: p.description,
         category: p.category,
@@ -246,7 +249,11 @@ export default {
       }
     },
     addProduct(){
-      fetch('/api/product', {
+      let url = '/api/product';
+      if(this.edit){
+        url += '/' + this.product.id;
+      }
+      fetch(url, {
         method: this.edit === false ? 'post' : 'put',
         headers: { 
           "Accept": "application/json",
@@ -259,7 +266,7 @@ export default {
       .then(res => res.json())
       .then(data => {
         // @TODO revise alert
-        alert('Product Created');
+        alert('Product ' + (this.edit ? "Updated" : "Created"));
         window.location.href = '/products';
       })
       .catch(error => console.log(error));
