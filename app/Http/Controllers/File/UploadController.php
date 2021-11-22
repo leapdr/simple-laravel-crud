@@ -10,20 +10,20 @@ class UploadController extends Controller
 {
     //
     public function uploadFiles(Request $request, $id){
+        $prodDir = "public/images/products/" . $id;
         $files = $request->file("files");
         $uploaded = [];
         $imagePaths = [];
         if($files){
             $counter = 1;
+
+            # empty directory first
+            Storage::deleteDirectory($prodDir);
+
+            # save uploads
             foreach($files as $file){
-                $file->storeAs('images/products/' . $id, $counter . ".jpeg");
+                $file->storeAs($prodDir, $counter . ".jpeg");
                 $counter++;
-                // $path = $file->getRealPath();
-                // $imagePaths[] = $path;
-                // if(is_file($path)){
-                //     $uploaded[] = Storage::disk('local')->put("asdf/asdf.png", 
-                //         file_get_contents($path));
-                // }
             }
         }
         

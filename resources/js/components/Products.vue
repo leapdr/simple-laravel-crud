@@ -19,7 +19,17 @@
         </div>
       </div>
       <div class="card-body">
-        <div v-html="product.description"></div>
+        <div class="container container-fluid">
+          <div class="row">
+            <div class="col col-2">
+              <img class="img-fluid" :src="`${product.mainImage}`" v-if="product.imgCount > 0">
+              <img class="img-fluid" :src="'/storage/images/img-placeholder.png'" alt="" v-else>
+            </div>
+            <div class="col col-10">
+              <div v-html="product.description"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -60,7 +70,8 @@ export default {
       product: {
         id: '',
         name: '',
-        desc: ''
+        desc: '',
+        imgCount: 0,
       },
       product_id: '',
       pagination: {},

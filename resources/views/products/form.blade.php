@@ -17,9 +17,7 @@
     <script>window.product = @json($product);</script>
     <div id="app">
         <div class="container">
-            <product-form>
-        
-            </product-form>
+            <product-form/>
         </div>
     </div>
 </section>

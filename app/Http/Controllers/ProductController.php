@@ -169,7 +169,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         return View::make('products.form')->with([
-            'product'   => $product,
+            'product'   => new ProductResource($product),
             'type'      => 'edit',
             'nav_page'  => 'products',
             'title'     => 'Edit Product',

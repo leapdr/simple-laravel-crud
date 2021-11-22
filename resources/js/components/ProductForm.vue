@@ -125,11 +125,14 @@ export default {
         description: p.description,
         category: p.category,
         datetime: p.datetime,
+        imgCount: p.imgCount,
+        imgToRemove: [],
         images: [],
       },
       product_id: '',
       pagination: {},
-      edit: p.id ? true : false
+      edit: p.id ? true : false,
+      fileUpdated: 'false'
     }
   },
   methods: {
@@ -140,7 +143,6 @@ export default {
       let formData = new FormData();
       for(let i = 0; i < this.product.images.length; i++){
         let file = this.product.images[i];
-        console.log(file);
         formData.append('files[' + i + ']', file);
       }
 
@@ -152,18 +154,14 @@ export default {
           'X-CSRF-TOKEN': this.csrf,
         },
         body: formData
-      }).then(res => {
-        console.log(res.text());
-        return res.json();
-      })
+      }).then(res => res.json())
       .then(data => {
-        console.log(data)
-
         window.location.href = '/products';
       })
       .catch(error => console.log(error));
     },
     fileChange(e){
+      this.fileChange = true;
       let files = e.target.files;
       if( this.product.images.length >= 5){
         alert("Only accept maximum of 5 per product");
@@ -180,6 +178,7 @@ export default {
       this.displaySelectedImageFiles();
     },
     validate(step){
+      console.log(p);
       if(step == 1){
         let htmlDesc = $("#product-description").summernote('code');
         this.product.description = htmlDesc == "<p><br></p>" ? "" : htmlDesc;
@@ -227,7 +226,6 @@ export default {
         .catch(error => console.log(error));
       } else if (step == 2){
         if( this.product.images.length == 0 ){
-          console.log("no selection");
           $("#product-file").addClass("is-invalid")
           $("#file-errorr").html("Please select at least one file.");
         } else {
@@ -298,7 +296,9 @@ export default {
         // @TODO revise alert
         alert('Product ' + (this.edit ? "Updated" : "Created"));
 
-        this.uploadFiles();
+        if( this.edit && this.fileUpdated){
+          this.uploadFiles();
+        }
       })
       .catch(error => console.log(error))
       .finally(function(){

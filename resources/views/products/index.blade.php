@@ -44,9 +44,7 @@
         </div><!-- /.row -->
 
         <div id="app">
-            <products>
-        
-            </products>
+            <products/>
         </div>
     </div>
 </section>

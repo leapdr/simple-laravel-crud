@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use App\Model\Product as Prod;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends JsonResource
 {
@@ -16,13 +17,20 @@ class Product extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        # check any uploaded images
+        $prodImages = Storage::files('public/images/products/' . $this->id);
+        $imgCount = count($prodImages);
+        $imgMain = asset('/storage/images/products/' . $this->id . "/1.jpeg");
 
-        // return [
-        //     'id'        => $this->id,
-        //     'title'     => $this->title,
-        //     'category'  => $this->category,
-        // ];
+        return [
+            'id'            => $this->id,
+            'name'          => $this->name,
+            'category'      => $this->category,
+            'description'   => $this->description,
+            'datetime'      => $this->datetime,
+            'imgCount'      => $imgCount,
+            'mainImage'     => $imgMain,
+        ];
     }
 
     public function with($request){
