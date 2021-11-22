@@ -203,7 +203,7 @@ class ProductController extends Controller
         $categories = DB::table('products')->distinct('category')->get();
 
         if( $categories ){
-            $distinctCategories = $categories->pluck('category')->toArray();
+            $distinctCategories = $categories->unique('category')->pluck('category')->toArray();
             return $distinctCategories;
         } else {
             return [];
